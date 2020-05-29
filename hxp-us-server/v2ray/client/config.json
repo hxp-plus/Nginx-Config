@@ -1,0 +1,132 @@
+{
+  "dns": {
+    "servers": [
+      "8.8.8.8"
+    ]
+  },
+  "inbounds": [
+    {
+      "port": 1081,
+      "listen": "0.0.0.0",
+      "settings": {
+        "udp": true
+      },
+      "protocol": "socks"
+    },
+    {
+      "port": 8001,
+      "listen": "0.0.0.0",
+      "protocol": "http"
+    }
+  ],
+  "log": {
+    "error": "C:\\Users\\hxp\\Desktop\\V2RayW\\log\\error.log",
+    "access": "C:\\Users\\hxp\\Desktop\\V2RayW\\log\\access.log",
+    "loglevel": "debug"
+  },
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "direct"
+    },
+    {
+      "sendThrough": "0.0.0.0",
+      "mux": {
+        "enabled": false,
+        "concurrency": 8
+      },
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "pan.hxp.plus",
+            "users": [
+              {
+                "id": "d521e864-db63-11e9-a7fe-a434d9184ceb",
+                "alterId": 64,
+                "security": "none",
+                "level": 0
+              }
+            ],
+            "port": 443
+          }
+        ]
+      },
+      "tag": "hxp-us",
+      "streamSettings": {
+        "wsSettings": {
+          "path": "/ray",
+          "headers": {}
+        },
+        "quicSettings": {
+          "key": "key",
+          "security": "none",
+          "header": {
+            "type": "none"
+          }
+        },
+        "tlsSettings": {
+          "allowInsecure": false,
+          "alpn": [
+            "http/1.1"
+          ],
+          "serverName": "pan.hxp.plus",
+          "allowInsecureCiphers": false
+        },
+        "httpSettings": {
+          "host": [
+            ""
+          ],
+          "path": ""
+        },
+        "kcpSettings": {
+          "header": {
+            "type": "none"
+          },
+          "mtu": 1350,
+          "congestion": false,
+          "tti": 50,
+          "uplinkCapacity": 5,
+          "writeBufferSize": 2,
+          "readBufferSize": 2,
+          "downlinkCapacity": 20
+        },
+        "tcpSettings": {
+          "header": {
+            "type": "none"
+          }
+        },
+        "security": "tls",
+        "network": "ws",
+        "sockopt": {}
+      }
+    }
+  ],
+  "routing": {
+    "name": "bypass cn&private",
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "domain": [
+          "localhost",
+          "geosite:cn"
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "ip": [
+          "geoip:private",
+          "geoip:cn"
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "hxp-us",
+        "port": "0-65535"
+      }
+    ]
+  }
+}
